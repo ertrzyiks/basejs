@@ -1,0 +1,11 @@
+{
+	"name": "Basejs",
+	"version": "1.0.0",
+	"author": "Mateusz Derks <mateusz.derks@gmail.com>",
+	
+	"private": true,
+	
+	"devDependencies": {
+		"mocha": "latest"
+	}
+}
