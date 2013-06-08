@@ -124,8 +124,9 @@
 	 * 
 	 * @method extend
 	 * @static
-	 * @param protoProps {Object}
-	 * @param staticProps {Object}
+	 * @param protoProps {Object} Prototype properties/methods
+	 * @param [staticProps] {Object} Static properties/methods
+	 * @return {Function} reference of defined class
 	 */
 	Base.extend = function(protoProps, staticProps) 
 	{
