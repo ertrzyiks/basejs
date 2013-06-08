@@ -16,8 +16,7 @@ Script expose object
 
 which is parent for all defined classes. You can instantialize object of Base class as well.
 
-Usage
-------
+### Usage ###
 
 ```javascript
 /**
@@ -48,10 +47,10 @@ this.applyParent( params );
 
 ```
 
-Examples
-------
+### Examples ###
 
-Simple
+
+#### Simple ####
 ```javascript
 //Extend Base to define custom class
 var Vehicle = Base.extend({
@@ -77,7 +76,7 @@ var myCar = new Car();
 //myCar.hasEngine === true
 ```
 
-Methods overriding with call to super
+#### Methods overriding with call to super ####
 ```javascript
 var Person = Base.extend({
   name: "",
@@ -108,4 +107,20 @@ var ShoutingPerson = Person.extend({
 var me = new ShoutingPerson("John");
 
 me.sayHello(); //console.log("Hello, my name is John!!!")
+```
+
+#### Static properties ####
+```javascript
+var Log = Base.extend({
+  //put log prototype here
+},
+{
+  //Statics
+  LEVEL_ERROR: 3,
+  LEVEL_WARN: 2,
+  LEVEL_INFO: 1
+  LEVEL_NONE: 0
+});
+
+console.log(Log.LEVEL_ERROR); // 3
 ```
