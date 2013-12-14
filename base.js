@@ -1,5 +1,5 @@
 /**
- * Basejs v1.0.0
+ * Basejs v1.1.0-dev
  * https://github.com/ertrzyiks/basejs
  * 
  * Its pseudoclass functionality from 
@@ -28,16 +28,15 @@
 	else {
 		root.Base = Base;
 	}
-		
-
-
+	
+	
 	/**
 	 * Default constructor
 	 *
 	 * @method constructor
 	 */
 	Base.prototype.constructor = function(){};
-
+	
 	/**
 	 * Get overriden function reference. Util common for apply/call, proto and static.
 	 * With {{#crossLink "Base/extend:method"}}{{/crossLink}} all methods receive hidden __name__ prop with name as
@@ -62,7 +61,7 @@
 			
 		return parentFn;
 	};
-
+	
 	/**
 	 * Static version, dont rely on prototype
 	 */
@@ -99,7 +98,7 @@
 			
 		return parentFn.apply(this, arguments);
 	};
-
+	
 	/**
 	 * Similar to callParent, but uses passed array of parameters.
 	 * 
@@ -113,7 +112,34 @@
 			
 		return parentFn.apply(this, params);
 	};
-
+	
+	/**
+	 * Returns collection of interfaces implemented by class.
+	 */
+	Base.__getInterfaces = function(){
+		return [];
+	};
+	
+	/**
+	 * Register new interface implemented by current class.
+	 *
+	 * Implement ensure that next `extend` call in chain define all members of interface.
+	 *
+	 * @method implement
+	 * @static
+	 * @param iface {Function} Class-interface which should be implemented by class.
+	 * @return {Function} Class referrence to continue chaining.
+	 *
+	 */
+	Base.implement = function( iface )
+	{
+		return this.extend(null, { __getInterfaces: function(){
+			var ifaces = this.callParent();
+			ifaces.push( iface.prototype );
+			return ifaces;
+		}});
+	};
+	
 	/**
 	 * Helper function to correctly set up the prototype chain, for subclasses.
 	 * Similar to `goog.inherits`, but uses a hash of prototype properties and
@@ -130,6 +156,25 @@
 	 */
 	Base.extend = function(protoProps, staticProps) 
 	{
+		//Check interfaces
+		if ( protoProps ){
+			each(this.__getInterfaces(), function( iface ){
+				for ( var member in iface )
+				{
+					if( member in protoProps )
+					{
+						//TODO: Compare types
+					}
+					else if ( !( member in this ) )
+					{
+						throw new Error("Interface member `" + member + "` is not implemented!");
+					}
+				}
+			}, this);
+		}
+		
+		protoProps = protoProps || {};
+		
 		var parent = this;
 		var child, key;
 		
@@ -152,7 +197,7 @@
 				staticProps[key].__owner__ = parent;
 			}
 		}
-
+		
 		// The constructor function for the new subclass is either defined by you
 		// (the "constructor" property in your `extend` definition), or defaulted
 		// by us to simply call the parent's constructor.
@@ -170,13 +215,13 @@
 
 		// Add static properties to the constructor function, if supplied.
 		extend(child, parent, staticProps);
-
+		
 		// Set the prototype chain to inherit from `parent`, without calling
 		// `parent`'s constructor function.
 		var Surrogate = function(){ this.constructor = child; };
 		Surrogate.prototype = parent.prototype;
 		child.prototype = new Surrogate;
-
+		
 		// Add prototype properties (instance properties) to the subclass,
 		// if supplied.
 		if (protoProps) extend(child.prototype, protoProps);
@@ -186,8 +231,8 @@
 
 		return child;
 	};
-
-
+	
+	
 	/***********************************************************************************
 	 * Utils extracted from underscore.js.
 	 */	 	
@@ -216,7 +261,7 @@
 		});
 		return obj;
 	};
-
+	
 	// The cornerstone, an `each` implementation, aka `forEach`.
 	// Handles objects with the built-in `forEach`, arrays, and raw objects.
 	// Delegates to **ECMAScript 5**'s native `forEach` if available.
@@ -246,5 +291,5 @@
 				}
 			}
 		}
-  };
+	};
 })();

@@ -357,5 +357,101 @@ describe('Base', function(){
 			assert.strictEqual(16, SubSubClass1.myMethod3(5, 3));
 			assert.strictEqual(10, SubSubClass1.myMethod4(5, 3, 2));
 		});
-	})
+	});
+	
+	describe('#implement', function(){
+		var Base = require("../base");
+		
+		it('should throw exception when interface member is not implemented', function(){
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			assert.throws( function(){
+				Base.implement(iFace1).extend({
+				});
+			} );
+		});
+		
+		it('should throw exception when member from one of interfaces is not implemented', function(){
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var iFace2 = Base.extend({
+				init: function(){}
+			});
+			
+			assert.throws( function(){
+				Base.implement(iFace1).implement(iFace2).extend({
+					counter: 0,
+					
+					//run: function(){},
+					init: function(){},
+					
+					pause: function(){},
+					unpause: function(){}
+				});
+			} );
+		});
+		
+		it('should allow to implement members of interface', function(){
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			assert.doesNotThrow( function(){
+				Base.implement( iFace1 ).extend({
+					counter: 0,
+				
+					run: function(){},
+				
+					pause: function(){},
+					unpause: function(){}
+				});
+			} );
+		});
+		
+		it('should allow to implement members of multiple interfaces', function(){
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var iFace2 = Base.extend({
+				init: function(){}
+			});
+			
+			assert.doesNotThrow( function(){
+				Base.implement( iFace1 ).implement( iFace2 ).extend({
+					counter: 0,
+					
+					init: function(){},
+					run: function(){},
+					
+					pause: function(){},
+					unpause: function(){}
+				});
+			} );
+		});
+	});
 })

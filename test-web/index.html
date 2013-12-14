@@ -31,6 +31,32 @@
 				document.write("<li>" + message + ": " + result +"</li>");
 			}
 			
+			assert.throws = function( message, task ){
+				var thrown = false;
+				
+				try{
+					task();
+				}
+				catch(e){
+					thrown = true;
+				}
+				
+				this(thrown, message);
+			};
+			
+			assert.doesNotThrow = function( message, task ){
+				var thrown = false;
+				
+				try{
+					task();
+				}
+				catch(e){
+					thrown = true;
+				}
+				
+				this(!thrown, message);
+			};
+			
 			var MyClass = Base.extend({
 				test1: 1,
 				
@@ -57,6 +83,60 @@
 			assert( MyClass2.test2 === 1.0, "Simple static property");
 			assert( 'testMethod' in MyClass2, "Static method definition");
 			assert( MyClass2.testMethod() === "123", "Static method call");
+			
+			
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var iFace2 = Base.extend({
+				init: function(){}
+			});
+			
+			assert.throws('Throw exception when interface member is not implemented', function(){
+				Base.implement(iFace1).extend({
+				});
+			} );
+				
+			assert.throws('Throw exception when member from one of interfaces is not implemented', function(){
+				Base.implement(iFace1).implement(iFace2).extend({
+					counter: 0,
+				
+					init: function(){},
+					
+					pause: function(){},
+					unpause: function(){}
+				});
+			} );
+			
+			assert.doesNotThrow('Implement members of interface', function(){
+				Base.implement( iFace1 ).extend({
+					counter: 0,
+				
+					run: function(){},
+				
+					pause: function(){},
+					unpause: function(){}
+				});
+			} );
+				
+			assert.doesNotThrow( "Implement members of multiple interfaces", function(){
+				Base.implement( iFace1 ).implement( iFace2 ).extend({
+					counter: 0,
+					
+					init: function(){},
+					run: function(){},
+					
+					pause: function(){},
+					unpause: function(){}
+				});
+			} );
+			
 		</script>
 		</ul>
     </body>
