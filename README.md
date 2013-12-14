@@ -52,7 +52,6 @@ this.applyParent( params );
 Any class can be use as an interface. By adding `implement` call into your class definition chain you can enforce existence of members in next `extend` call.
 
 ```javascript
-
 var ITask = Base.extend({
   execute: function(){}
 });
@@ -66,8 +65,31 @@ var DisplayInfo = Base
       console.log("Hello world!");
     }
   });
-
 ```
+
+
+### Mixins ###
+Mixins are shared, reusable, prototyped and/or static classes. The `use` operation works just like `extend`, but uses class-function instead hashmaps `{}`.
+
+```javascript
+var Mixin = Base.extend({
+  onClick: function(e){
+    console.log("Im shared on click handler, YAY!");
+  }
+});
+
+var Entry = Base.use(Mixin).extend({
+  constructor: function(){
+    this.bind("click", this.onClick);
+  },
+  
+  
+  bind: function(event, cb){
+    //Do some binding
+  }
+});
+```
+
 
 
 ### Examples ###
