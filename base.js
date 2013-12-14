@@ -128,7 +128,7 @@
 	 * @method implement
 	 * @static
 	 * @param iface {Function} Class-interface which should be implemented by class.
-	 * @return {Function} Class referrence to continue chaining.
+	 * @return {Function} Class reference to continue chaining.
 	 *
 	 */
 	Base.implement = function( iface )
