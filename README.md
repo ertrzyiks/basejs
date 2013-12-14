@@ -47,6 +47,29 @@ this.applyParent( params );
 
 ```
 
+### Interfaces ###
+
+Any class can be use as an interface. By adding `implement` call into your class definition chain you can enforce existence of members in next `extend` call.
+
+```javascript
+
+var ITask = Base.extend({
+  execute: function(){}
+});
+
+
+var DisplayInfo = Base
+  .implement( ITask )
+  .extend({
+    //Lack of this function would cause exception
+    execute: function(){
+      console.log("Hello world!");
+    }
+  });
+
+```
+
+
 ### Examples ###
 
 
