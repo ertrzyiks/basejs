@@ -137,6 +137,39 @@
 				});
 			} );
 			
+			
+			
+			var Mixin = Base.extend(
+				{
+					testing1: true
+				},
+				{
+					testing1: true
+				}
+			);
+			
+			var Mixin2 = Base.extend(
+				{
+					testing3: true
+				},
+				{
+					testing3: true
+				}
+			);
+			
+			var Class1 = Base.use(Mixin).use(Mixin2).extend(
+				{
+					testing2:  false
+				},
+				{
+					testing2:  false
+				}
+			);
+			
+			var o = new Class1();
+			
+			assert( o.testing1 === true && o.testing2 === false && o.testing3 === true, "Mixin prototype property");
+			assert( Class1.testing1 === true && Class1.testing2 === false && Class1.testing3 === true, "Mixin static property");
 		</script>
 		</ul>
     </body>

@@ -141,6 +141,21 @@
 	};
 	
 	/**
+	 * @method use
+	 * @static
+	 */
+	Base.use = function( mixin )
+	{
+		if(mixin && !isFunction(mixin))
+		{
+			throw new Error("Given prototype mixin is not function");
+		}
+		
+		return this.extend( mixin.prototype, mixin );
+	};
+	
+	
+	/**
 	 * Helper function to correctly set up the prototype chain, for subclasses.
 	 * Similar to `goog.inherits`, but uses a hash of prototype properties and
 	 * class properties to be extended.

@@ -454,4 +454,75 @@ describe('Base', function(){
 			} );
 		});
 	});
+	
+	describe('#use', function(){
+		var Base = require("../base");
+		
+		it('should allow to use single prototype mixin', function(){
+			var Mixin = Base.extend({
+				testing1: true
+			});
+			
+			var Class1 = Base.use(Mixin).extend({
+				testing2:  false
+			});
+			
+			var o = new Class1();
+			
+			assert.strictEqual(o.testing1, true);
+			assert.strictEqual(o.testing2, false);
+		});
+		
+		it('should allow to use multiple prototype mixin', function(){
+			var Mixin1 = Base.extend({
+				testing1: true
+			});
+			
+			var Mixin2 = Base.extend({
+				testing3: true
+			});
+			
+			var Class1 = Base.use(Mixin1).use(Mixin2).extend({
+				testing2:  false
+			});
+			
+			var o = new Class1();
+			
+			assert.strictEqual(o.testing1, true);
+			assert.strictEqual(o.testing2, false);
+			assert.strictEqual(o.testing3, true);
+		});
+		
+		
+		it('should allow to use single prototype mixin', function(){
+			var Mixin = Base.extend({}, {
+				testing1: true
+			});
+			
+			var Class1 = Base.use(Mixin).extend({}, {
+				testing2:  false
+			});
+			
+			assert.strictEqual(Class1.testing1, true);
+			assert.strictEqual(Class1.testing2, false);
+		});
+		
+		it('should allow to use multiple prototype mixin', function(){
+			var Mixin1 = Base.extend({}, {
+				testing1: true
+			});
+			
+			var Mixin2 = Base.extend({}, {
+				testing3: true
+			});
+			
+			var Class1 = Base.use(Mixin1).use(Mixin2).extend({},{
+				testing2:  false
+			});
+			
+			assert.strictEqual(Class1.testing1, true);
+			assert.strictEqual(Class1.testing2, false);
+			assert.strictEqual(Class1.testing3, true);
+		});
+	});
 })
