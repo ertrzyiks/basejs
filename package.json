@@ -1,11 +1,13 @@
 {
 	"name": "Basejs",
-	"version": "1.0.0",
+	"version": "1.1.0-dev",
 	"author": "Mateusz Derks <mateusz.derks@gmail.com>",
 	
 	"private": true,
 	
 	"devDependencies": {
-		"mocha": "latest"
+		"mocha": "latest",
+		"grunt-contrib-copy": "~0.4.1",
+		"grunt-contrib-uglify": "~0.2.7"
 	}
 }

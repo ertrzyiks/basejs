@@ -1,63 +1,36 @@
 <!DOCTYPE html>
 <html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Basejs test</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-
-		<style>
-		 .red{ color:red; }
-		 .green{ color:green; }
-		</style>
-        <script src="../base.js"></script>
-    </head>
-    <body>
-        <h3>Tests</h3>
-		<ul>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Basejs test</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+		<script src="../node_modules/mocha/mocha.js"></script>
+		<script>mocha.setup('bdd')</script>
+		<script src="./assert.js"></script>
+		<script src="../base.js"></script>
+		
 		<script>
-			//Just basic tests, for more advanced see 
-			//test/test-inheritance.js
-			function assert(condition, message){
-				var result;
-				
-				if(condition){
-					result = "<span class=\"green\">Ok</span>";
+			function require( s ){
+				switch(s){
+					case "assert":
+						return assert;
+					case "../base":
+						return Base;
 				}
-				else{
-					result = "<span class=\"red\">Fail</span>";
-				}
-				document.write("<li>" + message + ": " + result +"</li>");
 			}
-			
-			var MyClass = Base.extend({
-				test1: 1,
-				
-				testMethod: function(){
-					return "123";
-				}
-			});
-			
-			
-			var myObject = new MyClass();
-			
-			assert( myObject.test1 === 1, "Simple property");
-			assert( 'testMethod' in myObject, "Method definition");
-			assert( myObject.testMethod() === "123", "Method call");
-			
-			var MyClass2 = Base.extend({}, {
-				test2: 1.0,
-				
-				testMethod: function(){
-					return "123";
-				}
-			});
-			
-			assert( MyClass2.test2 === 1.0, "Simple static property");
-			assert( 'testMethod' in MyClass2, "Static method definition");
-			assert( MyClass2.testMethod() === "123", "Static method call");
 		</script>
-		</ul>
-    </body>
+		
+		<script src="../test/test-inheritance.js"></script>
+		</head>
+	<body>
+		<div id="mocha"></div>
+		 <script>
+			mocha.checkLeaks();
+			mocha.run();
+		  </script>
+	</body>
 </html>

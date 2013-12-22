@@ -22,7 +22,7 @@ which is parent for all defined classes. You can instantialize object of Base cl
 /**
  * @method extend
  * @static
- * @param protoProps {Object} Prototype properties/methods
+ * @param protoProps {Object, Function} Prototype properties/methods or class from which to copy prototype
  * @param [staticProps] {Object} Static properties/methods
  * @return {Function} reference of defined class
  */
@@ -30,7 +30,7 @@ Base.extend(protoProps, [staticsProps]);
 
 ```
 
-Every class can define custom constructor function, which will be called on object initialization.
+Every class can define custom `constructor` function, which will be called on object initialization.
 
 Primitive properties can be set directly in props. 
 Objects and arrays should be set in constructor or getter to avoid prototype-shared instances. 
@@ -46,6 +46,69 @@ this.callParent( ... );
 this.applyParent( params );
 
 ```
+
+### Interfaces ###
+
+Any class can be use as an interface. By adding `implement` call into your class definition chain you can enforce existence of members in next `extend` call.
+
+```javascript
+var ITask = Base.extend({
+  execute: function(){}
+});
+
+
+var DisplayInfo = Base
+  .implement( ITask )
+  .extend({
+    //Lack of this function would cause exception
+    execute: function(){
+      console.log("Hello world!");
+    }
+  });
+```
+
+Any object created with Base or Base children class can be tested for being instance of class implementing a interface.
+
+```javascript
+if( (new DisplayInfo()).isImplementing( ITask ) )
+{
+	//Put your code here
+}
+```
+
+
+### Mixins ###
+Mixins are shared, reusable, prototyped and/or static classes. The `use` operation works just like `extend`, but uses class-function instead hashmaps `{}`.
+
+```javascript
+var Mixin = Base.extend({
+  onClick: function(e){
+    console.log("Im shared on click handler, YAY!");
+  }
+});
+
+var Entry = Base.use(Mixin).extend({
+  constructor: function(){
+    this.bind("click", this.onClick);
+  },
+  
+  
+  bind: function(event, cb){
+    //Do some binding
+  }
+});
+```
+
+
+```javascript
+//Copy prototype from Class1
+var Class2a = Base.extend(Class1).extend({ ... });
+//Copy prototype and static members from Class1
+var Class2b = Base.use(Class1).extend({ ... });
+```
+
+
+
 
 ### Examples ###
 
