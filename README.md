@@ -22,7 +22,7 @@ which is parent for all defined classes. You can instantialize object of Base cl
 /**
  * @method extend
  * @static
- * @param protoProps {Object} Prototype properties/methods
+ * @param protoProps {Object, Function} Prototype properties/methods or class from which to copy prototype
  * @param [staticProps] {Object} Static properties/methods
  * @return {Function} reference of defined class
  */
@@ -89,6 +89,15 @@ var Entry = Base.use(Mixin).extend({
   }
 });
 ```
+
+
+```javascript
+//Copy prototype from Class1
+var Class2a = Base.extend(Class1).extend({ ... });
+//Copy prototype and static members from Class1
+var Class2b = Base.use(Class1).extend({ ... });
+```
+
 
 
 

@@ -142,7 +142,7 @@ describe('Base', function(){
 			assert.strictEqual(5, o.value2);
 		});
 		
-		it('should allow to call parent constructor', function(){
+		it('should allow to call parent constructor from few layers up', function(){
 			var Class1 = Base.extend({
 				value1: 0,
 				value2: 0,
@@ -156,21 +156,37 @@ describe('Base', function(){
 			Class1.prototype.constructor.hyc = 1;
 			
 			var Class2 = Class1.extend({
-				value1: 0,
-				value2: 0,
+			});
+			
+			var Class3 = Class2.extend({
 				value3: 0,
-				
-				constructor: function(value1, value2, value3){			
-					this.applyParent(arguments);
+				constructor: function(value1, value2, value3){
+					this.applyParent( arguments );
+					
 					this.value3 = value3;
 				}
 			});
 					
-			var o = new Class2(2, 5, 1);
+			var o = new Class3(2, 5, 1);
 						
 			assert.strictEqual(2, o.value1);
 			assert.strictEqual(5, o.value2);
 			assert.strictEqual(1, o.value3);
+		});
+		
+				
+		it('should provide prototyped inheritance of properties', function(){
+			var Class1 = Base.extend({
+				myProp1: "qwerty123",
+				myProp2: 3.14
+			});
+			
+			var o1 = new Class1();
+				
+			assert.ok('myProp1' in o1);
+			assert.ok('myProp2' in o1);
+			assert.strictEqual("qwerty123", o1.myProp1);
+			assert.strictEqual(3.14, o1.myProp2);
 		});
 		
 		

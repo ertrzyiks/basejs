@@ -151,7 +151,7 @@
 			throw new Error("Given prototype mixin is not function");
 		}
 		
-		return this.extend( mixin.prototype, mixin );
+		return this.extend( mixin, mixin );
 	};
 	
 	
@@ -165,7 +165,7 @@
 	 * 
 	 * @method extend
 	 * @static
-	 * @param protoProps {Object} Prototype properties/methods
+	 * @param protoProps {Object,Function} Prototype properties/methods or class to inherit prototype from
 	 * @param [staticProps] {Object} Static properties/methods
 	 * @return {Function} reference of defined class
 	 */
@@ -173,6 +173,11 @@
 	{
 		//Check interfaces
 		if ( protoProps ){
+			if ( isFunction(protoProps) )
+			{	
+				protoProps = protoProps.prototype;
+			}
+			
 			each(this.__getInterfaces(), function( iface ){
 				for ( var member in iface )
 				{
