@@ -141,6 +141,36 @@
 	};
 	
 	/**
+	 * Check if object is instance of class which implements given interface.
+	 * 
+	 * @method implement
+	 * @param iface {Function} Class-interface which should be implemented by object's class.
+	 */
+	Base.prototype.isImplementing = function( iface ){
+		if(iface && !isFunction(iface))
+		{
+			throw new Error("Given interface " + iface + " is not function");
+		}
+		
+		//Get prototype to compare with interfaces list
+		iface = iface.prototype;
+		
+		var cnstr = this.constructor,
+			interfaces = cnstr.__getInterfaces(),
+			length = interfaces.length;
+			
+		for( var i = 0; i < length; i++ )
+		{
+			if( interfaces[i] === iface )
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	};
+	
+	/**
 	 * @method use
 	 * @static
 	 */
@@ -148,7 +178,7 @@
 	{
 		if(mixin && !isFunction(mixin))
 		{
-			throw new Error("Given prototype mixin is not function");
+			throw new Error("Given prototype mixin " + mixin + "is not function");
 		}
 		
 		return this.extend( mixin, mixin );
@@ -185,7 +215,7 @@
 					{
 						//TODO: Compare types
 					}
-					else if ( !( member in this ) )
+					else if ( !( member in this.prototype ) )
 					{
 						throw new Error("Interface member `" + member + "` is not implemented!");
 					}
@@ -248,7 +278,7 @@
 		
 		//Ensure owner
 		child.__owner__ = parent;
-
+		
 		return child;
 	};
 	

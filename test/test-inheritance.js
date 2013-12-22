@@ -39,6 +39,32 @@ describe('Base', function(){
 			
 		});
 		
+		it('should provide extension from other class prototype', function(){
+			var Class1 = Base.extend({
+				myProp1: "qwerty123",
+				myProp2: 3.14
+			});
+			
+			var Class2 = Base.extend({
+				myProp3: true
+			});
+			
+			var Class3 = Class1.extend(Class2).extend({
+				myProp4: 2
+			});	
+			
+			var o = new Class3();
+				
+			assert.ok('myProp1' in o);
+			assert.ok('myProp2' in o);
+			assert.ok('myProp3' in o);
+			assert.ok('myProp4' in o);
+			assert.strictEqual("qwerty123", o.myProp1);
+			assert.strictEqual(3.14, o.myProp2);
+			assert.strictEqual(true, o.myProp3);
+			assert.strictEqual(2, o.myProp4);
+		});
+		
 		it('should provide prototyped inheritance of properties with multiple levels', function(){
 			var Class1 = Base.extend({
 				myProp1: "qwerty123",
@@ -375,6 +401,68 @@ describe('Base', function(){
 		});
 	});
 	
+	describe('#instanceof', function(){
+		var Base = require("../base");
+		
+		it('should find first level class', function(){
+			var Class1 = Base.extend({});
+			
+			var o = new Class1();
+			
+			assert.strictEqual(true, o instanceof Class1 );
+		});
+		
+		it('should find second level class', function(){
+			var Class1 = Base.extend({});
+			var Class2 = Class1.extend({});
+			
+			var o = new Class2();
+			
+			assert.strictEqual(true, o instanceof Class1 );
+			assert.strictEqual(true, o instanceof Class2 );
+		});
+		
+		it('should find higher level class', function(){
+			var Class1 = Base.extend({});
+			var Class2 = Class1.extend({ constructor: function(){} });
+			var Class3 = Class2.extend({});
+			var Class4 = Class3.extend({});
+			var Class5 = Class4.extend({});
+			
+			var o = new Class5();
+			
+			assert.strictEqual(true, o instanceof Class1 );
+			assert.strictEqual(true, o instanceof Class2 );
+			assert.strictEqual(true, o instanceof Class3 );
+			assert.strictEqual(true, o instanceof Class4 );
+			assert.strictEqual(true, o instanceof Class5 );
+		});
+		
+		it('should return false on strange classes', function(){
+			var Class1 = Base.extend({});
+			var Class2 = Base.extend({});
+			
+			var o = new Class1();
+			
+			assert.strictEqual(false, o instanceof Class2);
+		});
+		
+		it('should return false on strange classes with complex chain', function(){
+			var Class1 = Base.extend({});
+			var Class2 = Class1.extend({});
+			var Class3 = Class2.extend({});
+			var Class4 = Class3.extend({});
+			var Class5 = Class4.extend({});
+			
+			var Class6 = Base.extend({});
+			
+			var o = new Class5();
+
+			assert.strictEqual(false, o instanceof Class6);
+		});
+	});
+	
+	
 	describe('#implement', function(){
 		var Base = require("../base");
 		
@@ -469,6 +557,68 @@ describe('Base', function(){
 				});
 			} );
 		});
+	});
+	
+	describe('#isImplementing', function(){
+		var Base = require("../base");
+		
+		it('allow to check if object has interface implemented by it`s class', function(){
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var iUnusedFace = Base.extend({ a: 1 });
+			
+			var Class1 = Base.implement( iFace1 ).extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var o = new Class1();
+			
+			assert.strictEqual(true, o.isImplementing( iFace1 ));
+			assert.strictEqual(false, o.isImplementing( iUnusedFace ));
+		});
+		
+		it('allow to check if object has interface implemented by it`s super class', function(){
+			var iFace1 = Base.extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var iUnusedFace = Base.extend({ a: 1 });
+			
+			var Class1 = Base.implement( iFace1 ).extend({
+				counter: 0,
+				
+				run: function(){},
+				
+				pause: function(){},
+				unpause: function(){}
+			});
+			
+			var Class2 = Class1.extend({
+				test: false
+			});
+			var o = new Class2();
+			
+			assert.strictEqual(true, o.isImplementing( iFace1 ));
+			assert.strictEqual(false, o.isImplementing( iUnusedFace ));
+		});
+		
 	});
 	
 	describe('#use', function(){

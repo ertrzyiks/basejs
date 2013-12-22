@@ -30,7 +30,7 @@ Base.extend(protoProps, [staticsProps]);
 
 ```
 
-Every class can define custom constructor function, which will be called on object initialization.
+Every class can define custom `constructor` function, which will be called on object initialization.
 
 Primitive properties can be set directly in props. 
 Objects and arrays should be set in constructor or getter to avoid prototype-shared instances. 
@@ -65,6 +65,15 @@ var DisplayInfo = Base
       console.log("Hello world!");
     }
   });
+```
+
+Any object created with Base or Base children class can be tested for being instance of class implementing a interface.
+
+```javascript
+if( (new DisplayInfo()).isImplementing( ITask ) )
+{
+	//Put your code here
+}
 ```
 
 
