@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Basejs by ertrzyiks</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/ertrzyiks/basejs">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/ertrzyiks/basejs/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/ertrzyiks/basejs/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Basejs</h1>
+          <p>NodeJS and browser javascript objective paradigm helper.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/ertrzyiks">ertrzyiks</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>
+<a name="basejs" class="anchor" href="#basejs"><span class="octicon octicon-link"></span></a>Base.js</h1>
+
+<p>NodeJS and browser javascript objective paradigm helper.</p>
+
+<p>Base.js is Backbone's inheritance code with improvements inspired with Sencha overloading approach.</p>
+
+<ul>
+<li>Backbone by Jeremy Ashkenas, DocumentCloud Inc. <a href="http://backbonejs.org/">http://backbonejs.org/</a>
+</li>
+<li>Sencha Touch 2, Sencha Inc. <a href="http://www.sencha.com/products/touch">http://www.sencha.com/products/touch</a>
+</li>
+</ul><p>Script expose object </p>
+
+<blockquote>
+<p>Base</p>
+</blockquote>
+
+<p>which is parent for all defined classes. You can instantialize object of Base class as well.</p>
+
+<h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="cm">/**</span>
+<span class="cm"> * @method extend</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param protoProps {Object, Function} Prototype properties/methods or class from which to copy prototype</span>
+<span class="cm"> * @param [staticProps] {Object} Static properties/methods</span>
+<span class="cm"> * @return {Function} reference of defined class</span>
+<span class="cm"> */</span>
+<span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">protoProps</span><span class="p">,</span> <span class="p">[</span><span class="nx">staticsProps</span><span class="p">]);</span>
+
+</pre></div>
+
+<p>Every class can define custom <code>constructor</code> function, which will be called on object initialization.</p>
+
+<p>Primitive properties can be set directly in props. 
+Objects and arrays should be set in constructor or getter to avoid prototype-shared instances. 
+Otherwise manipulation of such object/array will be applied to all objects of class.</p>
+
+<p>Overriding methods is supported with two helper functions. You can use them in any method of class.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="cm">/**</span>
+<span class="cm"> * Call current method from parent prototype/static context. </span>
+<span class="cm"> * Two versions allow you to convenient use Function.apply() or Function.call() way</span>
+<span class="cm"> */</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">callParent</span><span class="p">(</span> <span class="p">...</span> <span class="p">);</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">applyParent</span><span class="p">(</span> <span class="nx">params</span> <span class="p">);</span>
+
+</pre></div>
+
+<h3>
+<a name="interfaces" class="anchor" href="#interfaces"><span class="octicon octicon-link"></span></a>Interfaces</h3>
+
+<p>Any class can be use as an interface. By adding <code>implement</code> call into your class definition chain you can enforce existence of members in next <code>extend</code> call.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ITask</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){}</span>
+<span class="p">});</span>
+
+
+<span class="kd">var</span> <span class="nx">DisplayInfo</span> <span class="o">=</span> <span class="nx">Base</span>
+  <span class="p">.</span><span class="nx">implement</span><span class="p">(</span> <span class="nx">ITask</span> <span class="p">)</span>
+  <span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="c1">//Lack of this function would cause exception</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello world!"</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+</pre></div>
+
+<p>Any object created with Base or Base children class can be tested for being instance of class implementing a interface.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="k">new</span> <span class="nx">DisplayInfo</span><span class="p">()).</span><span class="nx">isImplementing</span><span class="p">(</span> <span class="nx">ITask</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//Put your code here</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="mixins" class="anchor" href="#mixins"><span class="octicon octicon-link"></span></a>Mixins</h3>
+
+<p>Mixins are shared, reusable, prototyped and/or static classes. The <code>use</code> operation works just like <code>extend</code>, but uses class-function instead hashmaps <code>{}</code>.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Mixin</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">onClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Im shared on click handler, YAY!"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">Entry</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Mixin</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">constructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="p">);</span>
+  <span class="p">},</span>
+
+
+  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+    <span class="c1">//Do some binding</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">//Copy prototype from Class1</span>
+<span class="kd">var</span> <span class="nx">Class2a</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Class1</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
+<span class="c1">//Copy prototype and static members from Class1</span>
+<span class="kd">var</span> <span class="nx">Class2b</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Class1</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<h4>
+<a name="simple" class="anchor" href="#simple"><span class="octicon octicon-link"></span></a>Simple</h4>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">//Extend Base to define custom class</span>
+<span class="kd">var</span> <span class="nx">Vehicle</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">hasEngine</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nx">serialNumber</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+
+  <span class="c1">//declaration</span>
+  <span class="nx">elements</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+
+  <span class="nx">constructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">//initialization</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">elements</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">//and extend custom class</span>
+<span class="kd">var</span> <span class="nx">Car</span> <span class="o">=</span> <span class="nx">Vehicle</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">//override default vehicle property value</span>
+  <span class="nx">hasEngine</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">myCar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Car</span><span class="p">();</span>
+<span class="c1">//myCar.hasEngine === true</span>
+</pre></div>
+
+<h4>
+<a name="methods-overriding-with-call-to-super" class="anchor" href="#methods-overriding-with-call-to-super"><span class="octicon octicon-link"></span></a>Methods overriding with call to super</h4>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s2">""</span><span class="p">,</span>
+
+  <span class="c1">//Capture initial parameter `name`</span>
+  <span class="nx">constructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">name</span> <span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="c1">//Be polite and say hello</span>
+  <span class="nx">sayHello</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">say</span><span class="p">(</span><span class="s2">"Hello, my name is "</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="c1">//generic method to output data</span>
+  <span class="nx">say</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">message</span> <span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">ShoutingPerson</span> <span class="o">=</span> <span class="nx">Person</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">//Add expression to all you say :)</span>
+  <span class="nx">say</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">callParent</span><span class="p">(</span><span class="nx">message</span> <span class="o">+</span> <span class="s2">"!!!"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">me</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ShoutingPerson</span><span class="p">(</span><span class="s2">"John"</span><span class="p">);</span>
+
+<span class="nx">me</span><span class="p">.</span><span class="nx">sayHello</span><span class="p">();</span> <span class="c1">//console.log("Hello, my name is John!!!")</span>
+</pre></div>
+
+<h4>
+<a name="static-properties" class="anchor" href="#static-properties"><span class="octicon octicon-link"></span></a>Static properties</h4>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Log</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">//put log prototype here</span>
+<span class="p">},</span>
+<span class="p">{</span>
+  <span class="c1">//Statics</span>
+  <span class="nx">LEVEL_ERROR</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="nx">LEVEL_WARN</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nx">LEVEL_INFO</span><span class="o">:</span> <span class="mi">1</span>
+  <span class="nx">LEVEL_NONE</span><span class="o">:</span> <span class="mi">0</span>
+<span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Log</span><span class="p">.</span><span class="nx">LEVEL_ERROR</span><span class="p">);</span> <span class="c1">// 3</span>
+</pre></div>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
