@@ -1,10 +1,10 @@
 Base.js
 ======
 
-NodeJS and browser javascript objective paradigm helper.
+Base is NodeJS and browser javascript objective paradigm helper.
 
 
-Base.js is Backbone's inheritance code with improvements inspired with Sencha overloading approach.
+Core of library contains Backbone's inheritance code with improvements inspired by Sencha framework.
 
 * Backbone by Jeremy Ashkenas, DocumentCloud Inc. http://backbonejs.org/
 * Sencha Touch 2, Sencha Inc. http://www.sencha.com/products/touch
@@ -46,69 +46,6 @@ this.callParent( ... );
 this.applyParent( params );
 
 ```
-
-### Interfaces ###
-
-Any class can be use as an interface. By adding `implement` call into your class definition chain you can enforce existence of members in next `extend` call.
-
-```javascript
-var ITask = Base.extend({
-  execute: function(){}
-});
-
-
-var DisplayInfo = Base
-  .implement( ITask )
-  .extend({
-    //Lack of this function would cause exception
-    execute: function(){
-      console.log("Hello world!");
-    }
-  });
-```
-
-Any object created with Base or Base children class can be tested for being instance of class implementing a interface.
-
-```javascript
-if( (new DisplayInfo()).isImplementing( ITask ) )
-{
-	//Put your code here
-}
-```
-
-
-### Mixins ###
-Mixins are shared, reusable, prototyped and/or static classes. The `use` operation works just like `extend`, but uses class-function instead hashmaps `{}`.
-
-```javascript
-var Mixin = Base.extend({
-  onClick: function(e){
-    console.log("Im shared on click handler, YAY!");
-  }
-});
-
-var Entry = Base.use(Mixin).extend({
-  constructor: function(){
-    this.bind("click", this.onClick);
-  },
-  
-  
-  bind: function(event, cb){
-    //Do some binding
-  }
-});
-```
-
-
-```javascript
-//Copy prototype from Class1
-var Class2a = Base.extend(Class1).extend({ ... });
-//Copy prototype and static members from Class1
-var Class2b = Base.use(Class1).extend({ ... });
-```
-
-
-
 
 ### Examples ###
 
@@ -187,3 +124,68 @@ var Log = Base.extend({
 
 console.log(Log.LEVEL_ERROR); // 3
 ```
+
+
+### Interfaces ###
+
+Any class can be use as an interface. By adding `implement` call into your class definition chain you can enforce existence of members in next `extend` call.
+
+```javascript
+var ITask = Base.extend({
+  execute: function(){}
+});
+
+
+var DisplayInfo = Base
+  .implement( ITask )
+  .extend({
+    //Lack of this function would cause exception
+    execute: function(){
+      console.log("Hello world!");
+    }
+  });
+```
+
+Any object created with Base or Base children class can be tested for being instance of class implementing a interface.
+
+```javascript
+if( (new DisplayInfo()).isImplementing( ITask ) )
+{
+	//Put your code here
+}
+```
+
+
+### Mixins ###
+Mixins are shared, reusable, prototyped and/or static classes. The `use` operation works just like `extend`, but uses class-function instead hashmaps `{}`.
+
+```javascript
+var Mixin = Base.extend({
+  onClick: function(e){
+    console.log("Im shared on click handler, YAY!");
+  }
+});
+
+var Entry = Base.use(Mixin).extend({
+  constructor: function(){
+    this.bind("click", this.onClick);
+  },
+  
+  
+  bind: function(event, cb){
+    //Do some binding
+  }
+});
+```
+
+
+```javascript
+//Copy prototype from Class1
+var Class2a = Base.extend(Class1).extend({ ... });
+//Copy prototype and static members from Class1
+var Class2b = Base.use(Class1).extend({ ... });
+```
+
+
+
+
