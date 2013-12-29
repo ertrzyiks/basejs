@@ -41,9 +41,9 @@
         <h1>
 <a name="basejs" class="anchor" href="#basejs"><span class="octicon octicon-link"></span></a>Base.js</h1>
 
-<p>Base is NodeJS and browser javascript objective paradigm helper.</p>
+<p>Base make it easier to write objective code in javascript for NodeJS and browsers.</p>
 
-<p>Core of library contains Backbone's inheritance code with improvements inspired by Sencha framework.</p>
+<p>Library includes Backbone's inheritance code with improvements inspired by Sencha framework.</p>
 
 <ul>
 <li>Backbone by Jeremy Ashkenas, DocumentCloud Inc. <a href="http://backbonejs.org/">http://backbonejs.org/</a>
@@ -64,7 +64,8 @@
 <div class="highlight highlight-javascript"><pre><span class="cm">/**</span>
 <span class="cm"> * @method extend</span>
 <span class="cm"> * @static</span>
-<span class="cm"> * @param protoProps {Object, Function} Prototype properties/methods or class from which to copy prototype</span>
+<span class="cm"> * @param protoProps {Object, Function} Prototype properties/methods </span>
+<span class="cm"> *   or class from which to copy prototype</span>
 <span class="cm"> * @param [staticProps] {Object} Static properties/methods</span>
 <span class="cm"> * @return {Function} reference of defined class</span>
 <span class="cm"> */</span>
@@ -82,7 +83,8 @@ Otherwise manipulation of such object/array will be applied to all objects of cl
 
 <div class="highlight highlight-javascript"><pre><span class="cm">/**</span>
 <span class="cm"> * Call current method from parent prototype/static context. </span>
-<span class="cm"> * Two versions allow you to convenient use Function.apply() or Function.call() way</span>
+<span class="cm"> * Two versions allow you to convenient use Function.apply() </span>
+<span class="cm"> * or Function.call() way</span>
 <span class="cm"> */</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">callParent</span><span class="p">(</span> <span class="p">...</span> <span class="p">);</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">applyParent</span><span class="p">(</span> <span class="nx">params</span> <span class="p">);</span>
@@ -120,7 +122,7 @@ Otherwise manipulation of such object/array will be applied to all objects of cl
 </pre></div>
 
 <h4>
-<a name="methods-overriding-with-call-to-super" class="anchor" href="#methods-overriding-with-call-to-super"><span class="octicon octicon-link"></span></a>Methods overriding with call to super</h4>
+<a name="overriding-methods-with-call-to-super" class="anchor" href="#overriding-methods-with-call-to-super"><span class="octicon octicon-link"></span></a>Overriding methods with call to super</h4>
 
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Person</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
   <span class="nx">name</span><span class="o">:</span> <span class="s2">""</span><span class="p">,</span>
@@ -157,7 +159,7 @@ Otherwise manipulation of such object/array will be applied to all objects of cl
 <a name="static-properties" class="anchor" href="#static-properties"><span class="octicon octicon-link"></span></a>Static properties</h4>
 
 <div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Log</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-  <span class="c1">//put log prototype here</span>
+  <span class="c1">//put prototype members here</span>
 <span class="p">},</span>
 <span class="p">{</span>
   <span class="c1">//Statics</span>
