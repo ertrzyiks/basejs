@@ -1,10 +1,10 @@
 Base.js
 ======
 
-Base is NodeJS and browser javascript objective paradigm helper.
+Base make it easier to write objective code in javascript for NodeJS and browsers.
 
 
-Core of library contains Backbone's inheritance code with improvements inspired by Sencha framework.
+Library includes Backbone's inheritance code with improvements inspired by Sencha framework.
 
 * Backbone by Jeremy Ashkenas, DocumentCloud Inc. http://backbonejs.org/
 * Sencha Touch 2, Sencha Inc. http://www.sencha.com/products/touch
@@ -22,7 +22,8 @@ which is parent for all defined classes. You can instantialize object of Base cl
 /**
  * @method extend
  * @static
- * @param protoProps {Object, Function} Prototype properties/methods or class from which to copy prototype
+ * @param protoProps {Object, Function} Prototype properties/methods 
+ *   or class from which to copy prototype
  * @param [staticProps] {Object} Static properties/methods
  * @return {Function} reference of defined class
  */
@@ -40,7 +41,8 @@ Overriding methods is supported with two helper functions. You can use them in a
 ```javascript
 /**
  * Call current method from parent prototype/static context. 
- * Two versions allow you to convenient use Function.apply() or Function.call() way
+ * Two versions allow you to convenient use Function.apply() 
+ * or Function.call() way
  */
 this.callParent( ... );
 this.applyParent( params );
@@ -76,7 +78,7 @@ var myCar = new Car();
 //myCar.hasEngine === true
 ```
 
-#### Methods overriding with call to super ####
+#### Overriding methods with call to super ####
 ```javascript
 var Person = Base.extend({
   name: "",
@@ -112,7 +114,7 @@ me.sayHello(); //console.log("Hello, my name is John!!!")
 #### Static properties ####
 ```javascript
 var Log = Base.extend({
-  //put log prototype here
+  //put prototype members here
 },
 {
   //Statics
