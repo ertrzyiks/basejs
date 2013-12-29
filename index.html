@@ -41,9 +41,9 @@
         <h1>
 <a name="basejs" class="anchor" href="#basejs"><span class="octicon octicon-link"></span></a>Base.js</h1>
 
-<p>NodeJS and browser javascript objective paradigm helper.</p>
+<p>Base is NodeJS and browser javascript objective paradigm helper.</p>
 
-<p>Base.js is Backbone's inheritance code with improvements inspired with Sencha overloading approach.</p>
+<p>Core of library contains Backbone's inheritance code with improvements inspired by Sencha framework.</p>
 
 <ul>
 <li>Backbone by Jeremy Ashkenas, DocumentCloud Inc. <a href="http://backbonejs.org/">http://backbonejs.org/</a>
@@ -87,63 +87,6 @@ Otherwise manipulation of such object/array will be applied to all objects of cl
 <span class="k">this</span><span class="p">.</span><span class="nx">callParent</span><span class="p">(</span> <span class="p">...</span> <span class="p">);</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">applyParent</span><span class="p">(</span> <span class="nx">params</span> <span class="p">);</span>
 
-</pre></div>
-
-<h3>
-<a name="interfaces" class="anchor" href="#interfaces"><span class="octicon octicon-link"></span></a>Interfaces</h3>
-
-<p>Any class can be use as an interface. By adding <code>implement</code> call into your class definition chain you can enforce existence of members in next <code>extend</code> call.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ITask</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-  <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){}</span>
-<span class="p">});</span>
-
-
-<span class="kd">var</span> <span class="nx">DisplayInfo</span> <span class="o">=</span> <span class="nx">Base</span>
-  <span class="p">.</span><span class="nx">implement</span><span class="p">(</span> <span class="nx">ITask</span> <span class="p">)</span>
-  <span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-    <span class="c1">//Lack of this function would cause exception</span>
-    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello world!"</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">});</span>
-</pre></div>
-
-<p>Any object created with Base or Base children class can be tested for being instance of class implementing a interface.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="k">new</span> <span class="nx">DisplayInfo</span><span class="p">()).</span><span class="nx">isImplementing</span><span class="p">(</span> <span class="nx">ITask</span> <span class="p">)</span> <span class="p">)</span>
-<span class="p">{</span>
-    <span class="c1">//Put your code here</span>
-<span class="p">}</span>
-</pre></div>
-
-<h3>
-<a name="mixins" class="anchor" href="#mixins"><span class="octicon octicon-link"></span></a>Mixins</h3>
-
-<p>Mixins are shared, reusable, prototyped and/or static classes. The <code>use</code> operation works just like <code>extend</code>, but uses class-function instead hashmaps <code>{}</code>.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Mixin</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
-  <span class="nx">onClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Im shared on click handler, YAY!"</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-
-<span class="kd">var</span> <span class="nx">Entry</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Mixin</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span>
-  <span class="nx">constructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="p">);</span>
-  <span class="p">},</span>
-
-
-  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
-    <span class="c1">//Do some binding</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-<div class="highlight highlight-javascript"><pre><span class="c1">//Copy prototype from Class1</span>
-<span class="kd">var</span> <span class="nx">Class2a</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Class1</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
-<span class="c1">//Copy prototype and static members from Class1</span>
-<span class="kd">var</span> <span class="nx">Class2b</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Class1</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
 </pre></div>
 
 <h3>
@@ -225,6 +168,63 @@ Otherwise manipulation of such object/array will be applied to all objects of cl
 <span class="p">});</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Log</span><span class="p">.</span><span class="nx">LEVEL_ERROR</span><span class="p">);</span> <span class="c1">// 3</span>
+</pre></div>
+
+<h3>
+<a name="interfaces" class="anchor" href="#interfaces"><span class="octicon octicon-link"></span></a>Interfaces</h3>
+
+<p>Any class can be use as an interface. By adding <code>implement</code> call into your class definition chain you can enforce existence of members in next <code>extend</code> call.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">ITask</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){}</span>
+<span class="p">});</span>
+
+
+<span class="kd">var</span> <span class="nx">DisplayInfo</span> <span class="o">=</span> <span class="nx">Base</span>
+  <span class="p">.</span><span class="nx">implement</span><span class="p">(</span> <span class="nx">ITask</span> <span class="p">)</span>
+  <span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="c1">//Lack of this function would cause exception</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello world!"</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+</pre></div>
+
+<p>Any object created with Base or Base children class can be tested for being instance of class implementing a interface.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="k">new</span> <span class="nx">DisplayInfo</span><span class="p">()).</span><span class="nx">isImplementing</span><span class="p">(</span> <span class="nx">ITask</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//Put your code here</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
+<a name="mixins" class="anchor" href="#mixins"><span class="octicon octicon-link"></span></a>Mixins</h3>
+
+<p>Mixins are shared, reusable, prototyped and/or static classes. The <code>use</code> operation works just like <code>extend</code>, but uses class-function instead hashmaps <code>{}</code>.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">Mixin</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">onClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Im shared on click handler, YAY!"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">Entry</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Mixin</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">constructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="p">);</span>
+  <span class="p">},</span>
+
+
+  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+    <span class="c1">//Do some binding</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">//Copy prototype from Class1</span>
+<span class="kd">var</span> <span class="nx">Class2a</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Class1</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
+<span class="c1">//Copy prototype and static members from Class1</span>
+<span class="kd">var</span> <span class="nx">Class2b</span> <span class="o">=</span> <span class="nx">Base</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">Class1</span><span class="p">).</span><span class="nx">extend</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>
 </pre></div>
       </section>
 
