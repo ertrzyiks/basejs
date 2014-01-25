@@ -690,5 +690,31 @@ describe('Base', function(){
 			assert.strictEqual(Class1.testing2, false);
 			assert.strictEqual(Class1.testing3, true);
 		});
+		
+		it('should ignore constructor', function(){
+			var BasicClass = Base.extend({
+				
+				count: 0,
+				
+				constructor: function ( count ){
+					this.count = count;
+				}
+			});
+			
+			var Mixin1 = Base.extend({
+				testing1: true
+			});
+			
+			var AdvancedClass = BasicClass.use( Mixin1 ).extend({
+				constructor: function ( count ){
+					this.callParent( count * 2 );
+				}
+			});
+			
+			var testObject = new AdvancedClass( 5 );
+			
+			assert.strictEqual( testObject.count, 10 );
+
+		});
 	});
 })

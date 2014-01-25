@@ -88,7 +88,7 @@
 	 * Call overriden function. Looking for same named function in super class and call with passed arguments.
 	 * 
 	 * @method callParent
-	 * @param ... {mixed}
+	 * @param {*} ... 
 	 */
 
 	Base.callParent = Base.prototype.callParent = function()
@@ -103,7 +103,7 @@
 	 * Similar to callParent, but uses passed array of parameters.
 	 * 
 	 * @method applyParent
-	 * @param params {Array} Array of parameters
+	 * @param  {Array} params Array of parameters
 	 */
 	Base.applyParent = Base.prototype.applyParent = function(params)
 	{
@@ -127,7 +127,7 @@
 	 *
 	 * @method implement
 	 * @static
-	 * @param iface {Function} Class-interface which should be implemented by class.
+	 * @param {Function} iface Class-interface which should be implemented by class.
 	 * @return {Function} Class reference to continue chaining.
 	 *
 	 */
@@ -144,7 +144,7 @@
 	 * Check if object is instance of class which implements given interface.
 	 * 
 	 * @method implement
-	 * @param iface {Function} Class-interface which should be implemented by object's class.
+	 * @param {Function} iface Class-interface which should be implemented by object's class.
 	 */
 	Base.prototype.isImplementing = function( iface ){
 		if(iface && !isFunction(iface))
@@ -195,17 +195,20 @@
 	 * 
 	 * @method extend
 	 * @static
-	 * @param protoProps {Object,Function} Prototype properties/methods or class to inherit prototype from
-	 * @param [staticProps] {Object} Static properties/methods
+	 * @param {Object,Function} protoProps Prototype properties/methods or class to inherit prototype from
+	 * @param {Object} [staticProps] Static properties/methods
 	 * @return {Function} reference of defined class
 	 */
 	Base.extend = function(protoProps, staticProps) 
 	{
+		var ignoreConstructor = false;
+		
 		//Check interfaces
 		if ( protoProps ){
 			if ( isFunction(protoProps) )
 			{	
 				protoProps = protoProps.prototype;
+				ignoreConstructor = true;
 			}
 			
 			each(this.__getInterfaces(), function( iface ){
@@ -251,7 +254,7 @@
 		// The constructor function for the new subclass is either defined by you
 		// (the "constructor" property in your `extend` definition), or defaulted
 		// by us to simply call the parent's constructor.
-		if (protoProps && has(protoProps, 'constructor')) 
+		if ( protoProps && has(protoProps, 'constructor') && !ignoreConstructor ) 
 		{
 			child = protoProps.constructor;
 		}
