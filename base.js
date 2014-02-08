@@ -1,5 +1,5 @@
 /**
- * Basejs v1.1.0
+ * Basejs {{VERSION}}
  * https://github.com/ertrzyiks/basejs
  * 
  * Its pseudoclass functionality from 
