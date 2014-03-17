@@ -244,7 +244,7 @@
 		//Fill __name__ for static functions
 		for(key in staticProps)
 		{
-			if(isFunction(staticProps[key]))
+			if(isFunction(staticProps[key]) && key != "__owner__")
 			{
 				staticProps[key].__name__ = key;
 				staticProps[key].__owner__ = parent;
